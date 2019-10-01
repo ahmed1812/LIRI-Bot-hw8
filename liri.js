@@ -9,25 +9,26 @@ var fs = require("fs");
 var action = process.argv[2];
 var value = process.argv[3];
 
+
 //function startProg(action, value) {
 
-    switch (action) {
-        case "concert-this":
-            concert(value);
-            break;
-        case "spotify-this-song":
-            song(value);
-            break;
-        case "movie-this":
-            movie(value);
-            break;
-        case "do-what-it-says":
+switch (action) {
+    case "concert-this":
+        concert(value);
+        break;
+    case "spotify-this-song":
+        song(value);
+        break;
+    case "movie-this":
+        movie(value);
+        break;
+    case "do-what-it-says":
 
-            doWhat(value);
-            break;
-        default:
-            break;
-    }
+        doWhat(value);
+        break;
+    default:
+        break;
+}
 //}
 
 //startProg(action, value);
@@ -37,16 +38,12 @@ function concert(value) {
     var artist = value;
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
         function (response) {
-           // console.log(response.data);
-             var result = response.data;
-             for (var i = 0; i < result.length; i++) {
-                console.log("------------------------------------");
-                 console.log(i);
-           // console.log(result[i]);
-                 console.log("Name of the venue : " + result[i].venue.name);
-                 console.log("Venue location : " + result[i].venue.city);
-                 var time = moment(result[i].datetime).format('L');
-                console.log("Date of the Event :" + time);
+            // console.log(response.data);
+            var result = response.data;
+            for (var i = 0; i < result.length; i++) {
+
+                var time = moment(result[i].datetime).format('L');
+                console.log(i + ":", result[i].venue.name + ",", result[i].venue.city, ",", time);
             }
         })
         .catch(function (error) {
@@ -56,7 +53,7 @@ function concert(value) {
 }
 //////////////////////////////////////
 function movie(value) {
-    var movies = value
+    var movies = value;
 
     axios.get("http://www.omdbapi.com/?t=" + movies + "&apikey=3bae49bd ").then(
         function (response) {
@@ -92,6 +89,9 @@ function song(value) {
         id: keys.spotify.id,
         secret: keys.spotify.secret
     });
+    if (songName === undefined) {
+        songName = "The Sign"
+    }
 
     spotify
         .search({ type: 'track', query: songName })
@@ -129,28 +129,22 @@ function doWhat() {
         // Then split it by commas (to make it more readable)
         var dataArr = data.split(",");
 
-        // We will then re-display the content as an array for later use.
-        //   console.log(dataArr);
 
-        // console.log("action: " +dataArr[0]);
-        // console.log("value: " +dataArr[1]);
-        // We will then print the contents of data
-       // startProg(dataArr[0], dataArr[1]);
-       var action = dataArr[0];
-       var value = dataArr[1];
-       switch (action) {
-        case "concert-this":
-            concert(value);
-            break;
-        case "spotify-this-song":
-            song(value);
-            break;
-        case "movie-this":
-            movie(value);
-            break;
-        
-        default:
-            break;
-    }
+        var action = dataArr[0];
+        var value = dataArr[1];
+        switch (action) {
+            case "concert-this":
+                concert(value);
+                break;
+            case "spotify-this-song":
+                song(value);
+                break;
+            case "movie-this":
+                movie(value);
+                break;
+
+            default:
+                break;
+        }
     });
 }
