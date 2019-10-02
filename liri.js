@@ -1,29 +1,43 @@
+// read and set any environment variables with the dotenv package
 require("dotenv").config();
+// TODO Grab the keys file...
 var keys = require("./keys.js");
+// TODO Grab the moment package...
 var moment = require('moment');
+// TODO Grab the axios package...
+// @link https://www.npmjs.com/package/axios
 var axios = require("axios");
+// TODO Grab the Spotify package...
 var Spotify = require('node-spotify-api');
 
-
+// Load the fs package to read and write
 var fs = require("fs");
+// Take two arguments.
+// The first will be the action (i.e. "concert-this", "spotify-this-song", etc.)
+// The second will be the amount that will be added, value .
 var action = process.argv[2];
 var value = process.argv[3];
 
 
 //function startProg(action, value) {
+// We will then create a switch-case statement (if-else would also work).
+// The switch-case will direct which function gets run.
 
 switch (action) {
     case "concert-this":
+        // call concert function
         concert(value);
         break;
     case "spotify-this-song":
+        // call song function
         song(value);
         break;
     case "movie-this":
+        // call movie function
         movie(value);
         break;
     case "do-what-it-says":
-
+        // call doWhat function
         doWhat(value);
         break;
     default:
@@ -33,7 +47,7 @@ switch (action) {
 
 //startProg(action, value);
 
-
+// If the "concert" function is called...
 function concert(value) {
     var artist = value;
     axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp").then(
@@ -52,8 +66,11 @@ function concert(value) {
         });
 }
 //////////////////////////////////////
+// If the "movie" function is called...
 function movie(value) {
     var movies = value;
+    // Then run a request with axios to the OMDB API with the movie specified
+
 
     axios.get("http://www.omdbapi.com/?t=" + movies + "&apikey=3bae49bd ").then(
         function (response) {
@@ -83,6 +100,7 @@ function movie(value) {
 
 }
 ///////////////////////////////////
+// If the "song" function is called...
 function song(value) {
     var songName = value;
     var spotify = new Spotify({
@@ -115,7 +133,9 @@ function song(value) {
 }
 
 ////////////////////////////////////
+// If the "doWhat" function is called...
 function doWhat() {
+    // We will read the existing bank file
 
     fs.readFile("random.txt", "utf8", function (error, data) {
 
@@ -129,9 +149,10 @@ function doWhat() {
         // Then split it by commas (to make it more readable)
         var dataArr = data.split(",");
 
-
+        // 
         var action = dataArr[0];
         var value = dataArr[1];
+        // The switch-case will direct which function gets run.
         switch (action) {
             case "concert-this":
                 concert(value);
