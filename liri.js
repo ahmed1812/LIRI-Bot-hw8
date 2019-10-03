@@ -70,7 +70,14 @@ function concert(value) {
 function movie(value) {
     var movies = value;
     // Then run a request with axios to the OMDB API with the movie specified
+    if (movies === undefined) {
+        movies = "Mr nobody";
+        console.log("---------------movie---------------");
+        console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
 
+        console.log("It's on Netflix!");
+
+    }
 
     axios.get("http://www.omdbapi.com/?t=" + movies + "&apikey=3bae49bd ").then(
         function (response) {
@@ -89,14 +96,14 @@ function movie(value) {
 
             console.log(error);
         });
-    if (movies === undefined) {
-        movies = "Mr nobody";
-        console.log("---------------movie---------------");
-        console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
+    // if (movies === undefined) {
+    //     movies = "Mr nobody";
+    //     console.log("---------------movie---------------");
+    //     console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
 
-        console.log("It's on Netflix!");
+    //     console.log("It's on Netflix!");
 
-    }
+    // }
 
 }
 ///////////////////////////////////
